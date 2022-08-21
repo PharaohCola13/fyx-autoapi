@@ -1,6 +1,5 @@
 name: Testing Fyx-Autodoc
 on:
-  push:
   workflow_dispatch:
 
 jobs:
@@ -14,6 +13,3 @@ jobs:
           ref: test
       - name: Fyx Testing
         uses: PharaohCola13/fyx-autodocumentation@main
-        env:
-          fyx_username: PharaohCola13
-          fyx_email: academic@sriley.dev
