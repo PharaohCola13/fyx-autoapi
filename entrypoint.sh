@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #> file: ./autodoc.sh
 #> synopsis: Generates skeleton docstrings for code
 #> author: PharaohCola13 <academic@sriley.dev
