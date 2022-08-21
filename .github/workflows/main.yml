@@ -1,5 +1,6 @@
 name: Testing Fyx-Autodoc
 on:
+  push:
   workflow_dispatch:
 
 jobs:
