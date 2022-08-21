@@ -1,5 +1,5 @@
 name: Testing Fyx-Autodoc
-on: [push, workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
   global:
