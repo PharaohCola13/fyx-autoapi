@@ -1,5 +1,0 @@
-name: Fyx Autodocumentation
-description: An automated method to generate in-code api skeletons
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
