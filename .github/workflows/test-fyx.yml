@@ -12,6 +12,9 @@ jobs:
           ref: test
       - name: Fyx Testing
         uses: PharaohCola13/fyx-autodoc@main
+        env:
+          FYX_USERNAME: PharaohCola13
+          FYX_EMAIL: academic@sriley.dev
       - name: Show results
         run: |
           cat ${{github.workspace}}/test.py
