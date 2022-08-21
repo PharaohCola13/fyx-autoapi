@@ -11,7 +11,7 @@ jobs:
         with:
           ref: test
       - name: Fyx Testing
-        uses: PharaohCola13/fyx-autodocumentation@main
+        uses: PharaohCola13/fyx-autodoc@main
       - name: Show results
         run: |
           cat ${{github.workspace}}/test.py
