@@ -18,3 +18,7 @@ jobs:
       - name: Show results
         run: |
           cat ${{github.workspace}}/test.py
+          cat ${{github.workspace}}/test.r
+          cat ${{github.workspace}}/test.rs
+          
+          
