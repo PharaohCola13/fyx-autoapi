@@ -1,10 +1,13 @@
-name: Fyx Autodocumentation
+name: Fyx Autodoc
 description: An automated method to generate in-code api skeletons
 inputs:
   wdir:
     description: "Working directory"
     required: true
     default: ${{github.workspace}}/
+branding:
+  icon: 'archive'
+  color: 'blue'
 runs:
   using: 'docker'
   image: 'Dockerfile'
