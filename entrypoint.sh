@@ -4,7 +4,7 @@
 #> synopsis: Generates skeleton docstrings for code
 #> author: PharaohCola13 <academic@sriley.dev>
 
-WDIR=$(pwd)
+WDIR=$INPUT_WDIR
 IGNORE=$(echo $WDIR/.ignore)
 
 IGSTR=""
@@ -120,14 +120,13 @@ for i in ${DIR[@]}; do
     esac
 done
 
-fname="./api-reference.rst"
+fname="$WDIR/api-reference.rst"
 repeat(){
     for ((i = 0; i < $2; i++)); do echo -n "$1"; done
 }
 echo -e "**************\nAPI Reference\n**************\n" > $fname
 
 for i in ${DIR[@]}; do
-    input=$i
     j=${i##*/}
     echo -e "\n$(repeat "-" ${#j})\n$j\n$(repeat "-" ${#j})" >> $fname
     while read -r line; do
@@ -162,5 +161,5 @@ for i in ${DIR[@]}; do
             echo -e "\n.. function:: ${func}\n" >> $fname
         ;;
         esac
-    done < "$input"
+    done < "$i"
 done
