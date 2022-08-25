@@ -16,10 +16,8 @@ if [[ -e $IGNORE ]]; then
     done < "$IGNORE"
 fi
 
-OUT=$(eval "find $WDIR $IGSTR -print")
+OUT=$(eval "find $WDIR $IGSTR -type f -print")
 DIR=($OUT)
-unset DIR[0]
-
 
 DETAIL="detail: "
 RETURN="return (type): "
@@ -41,6 +39,7 @@ topwrite() {
 }
 
 for i in ${DIR[@]}; do
+    echo -e $i
     j=${i##*/}
     case ${j#*.} in 
         'r' | 'py')
@@ -110,10 +109,7 @@ for i in ${DIR[@]}; do
                     fi
                 esac
             done < "$i"
-            ;;  
-        # "sh")
-        #     topwrite '#' $i
-        #     ;;
+            ;;
         *)
             continue
             ;;
