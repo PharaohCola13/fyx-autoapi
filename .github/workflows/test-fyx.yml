@@ -22,5 +22,6 @@ jobs:
           cat ${{github.workspace}}/test.py
           cat ${{github.workspace}}/test.r
           cat ${{github.workspace}}/test.rs
+          cat ${{github.workspace}}/api-reference.rst
           
           
