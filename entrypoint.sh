@@ -4,20 +4,22 @@
 #> synopsis: Generates skeleton docstrings for code
 #> author: PharaohCola13 <academic@sriley.dev>
 
-WDIR=$INPUT_WDIR
+WDIR="."
 IGNORE=$(echo $WDIR/.ignore)
 
 IGSTR=""
 if [[ -e $IGNORE ]]; then
+    echo -e ".ignore file detected"
     while read -r line; do
-        for i in $line; do
-            IGSTR+="-not -regex \"$WDIR/$line.*\" "
-        done
+        Line="$(echo $line | tr -d '\r')"
+        IGSTR+="-not -regex $WDIR/$Line.+ "
     done < "$IGNORE"
 fi
 
 OUT=$(eval "find $WDIR $IGSTR -type f -print")
 DIR=($OUT)
+
+
 
 DETAIL="detail: "
 RETURN="return (type): "
