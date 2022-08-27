@@ -1,10 +1,16 @@
 # Container image that runs your code
-FROM ubuntu:latest
+FROM python:latest
 
-# Copies your code file from your action repository to the filesystem path `/` of the container
-COPY entrypoint.sh /entrypoint.sh
+#RUN apt-get install python3
+# RUN apt-get install latexmk texlive-latex-extra
+RUN pip install sphinx sphinx-rtd-theme
 
-RUN chmod +x entrypoint.sh
+COPY ./api-gen.sh /api-gen.sh
+COPY ./api-ref.sh /api-ref.sh
+COPY ./api-test.sh /api-test.sh
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
 
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT /entrypoint.sh $INPUT_TYPE $INPUT_DIR

@@ -5,6 +5,9 @@ inputs:
     description: "Working directory"
     required: true
     default: ${{github.workspace}}/
+  type:
+    description: "Operation selection"
+    required: true
 branding:
   icon: 'archive'
   color: 'blue'

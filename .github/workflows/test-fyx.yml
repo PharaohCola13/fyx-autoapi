@@ -3,7 +3,7 @@ on: [workflow_dispatch]
 
 jobs:
   global:
-    name: Global tests
+    name: Sample testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout testing branch
@@ -14,6 +14,7 @@ jobs:
         uses: PharaohCola13/fyx-autodoc@main
         with:
           wdir: ${{github.workspace}}/
+          type: all
         env:
           FYX_USERNAME: PharaohCola13
           FYX_EMAIL: academic@sriley.dev
