@@ -11,7 +11,7 @@ jobs:
         with:
           ref: test
       - name: Fyx Testing
-        uses: PharaohCola13/fyx-autodoc@main
+        uses: PharaohCola13/fyx-autoapi@main
         with:
           dir: ./
           type: all
