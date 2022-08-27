@@ -13,7 +13,7 @@ jobs:
       run: |
         echo $CR_PAT | docker login ghcr.io -u PharaohCola13 --password-stdin
       env:
-        CR_PAT: ${{ secrets.CR_TOKEN }}
+        CR_PAT: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and Publish the PMAT Package
       run: |
         docker build . --tag ghcr.io/PharaohCola13/fyx-autodoc:latest
