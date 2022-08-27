@@ -18,12 +18,6 @@ jobs:
         env:
           FYX_USERNAME: PharaohCola13
           FYX_EMAIL: academic@sriley.dev
-      - name: Show results
-        run: |
-          cat ${{github.workspace}}/test.py
-          cat ${{github.workspace}}/test.r
-          cat ${{github.workspace}}/test.rs
-          cat ${{github.workspace}}/api-reference.rst
       - name: stage changed files
         run: git add ${{github.workspace}}/*
       - name: Commit files
