@@ -1,0 +1,21 @@
+name: Update Fyx-Autodoc 
+on: [workflow_dispatch]
+      
+jobs:
+  publish_package:
+    needs: update
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+      with:
+       ref: main
+    - name: Login to GHCR
+      run: |
+        echo $CR_PAT | docker login ghcr.io -u PharaohCola13 --password-stdin
+      env:
+        CR_PAT: ${{ secrets.CR_TOKEN }}
+    - name: Build and Publish the PMAT Package
+      run: |
+        docker build . --tag ghcr.io/PharaohCola13/fyx-autodoc:latest
+        docker push ghcr.io/PharaohCola13/fyx-autodoc:latest
