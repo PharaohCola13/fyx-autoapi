@@ -10,7 +10,7 @@ COPY ./api-ref.sh /api-ref.sh
 COPY ./api-test.sh /api-test.sh
 COPY ./entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /entrypoint.sh /api-gen.sh /api-ref.sh /api-test.sh
 
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
-ENTRYPOINT /entrypoint.sh $INPUT_TYPE ./
+ENTRYPOINT /entrypoint.sh $INPUT_TYPE $INPUT_DIR

@@ -13,7 +13,7 @@ jobs:
       - name: Fyx Testing
         uses: PharaohCola13/fyx-autodoc@main
         with:
-          wdir: ${{github.workspace}}/
+          dir: ./
           type: all
         env:
           FYX_USERNAME: PharaohCola13

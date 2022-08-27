@@ -1,6 +1,9 @@
 name: Fyx Autodoc
 description: An automated method to generate in-code api skeletons
 inputs:
+  dir:
+    description: "Working directory"
+    required: true
   type:
     description: "Operation selection"
     required: true
