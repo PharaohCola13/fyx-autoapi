@@ -1,0 +1,12 @@
+.git
+Dockerfile
+entrypoint.sh
+README.md
+action.yml
+.github
+.ignore
+api-reference.rst
+fyx
+Makefile
+build
+docsrc
