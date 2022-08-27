@@ -18,14 +18,24 @@ Tag | Description
 detail | description of the function 
 param (type) arg (default) | the description of the argument
 return (type) | Information regarding the output of the function
+test-method | What type of assertion will be used in the unit tests
 
 ## Example Usage
 ```
 uses: PharaohCola13/fyx-autodocumentation@main
+with:
+   dir: ./src
+   type: all
 env:
    FYX_USERNAME: PharaohCola13
    FYX_EMAIL: academic@sriley.dev
 ```
+
+### Inputs
+
+Argument | Description
+---------|---------------
+wdir | 
 
 ## Test case (test.py)
 
@@ -45,6 +55,7 @@ def test(arg6, arg7=1, arg8="test1"):
 #> param (type) arg7 (1):
 #> param (type) arg8 (test1):
 #> return (type): 
+#> test-method: 
     return out
 ```
 
@@ -69,7 +80,8 @@ test1 <- function(arg1, arg2="test2"){
 #> detail: 
 #> param (type) arg1:
 #> param (type) arg2 (test2):
-#> return (type): 
+#> return (type):
+#> test-method:
     return(args)
 }
 
@@ -103,7 +115,8 @@ fn test -> function(arg5:u32, arg6:i16){
 //> detail: 
 //> param (u32) arg5:
 //> param (i16) arg6:
-//> return (type): 
+//> return (type):
+//> test-method:
     return out
 }
 
@@ -113,6 +126,7 @@ fn test2 -> function(arg5:u32, arg10:i8){
 //> param (u32) arg5:
 //> param (i8) arg10:
 //> return (type): 
+//> test-method:
 
 }
 ```
