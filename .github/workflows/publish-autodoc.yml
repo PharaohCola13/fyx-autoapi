@@ -16,5 +16,5 @@ jobs:
         CR_PAT: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and Publish the PMAT Package
       run: |
-        docker build . --tag ghcr.io/PharaohCola13/fyx-autodoc:latest
-        docker push ghcr.io/PharaohCola13/fyx-autodoc:latest
+        docker build . --tag ghcr.io/PharaohCola13/fyxapi:latest
+        docker push ghcr.io/PharaohCola13/fyxapi:latest
