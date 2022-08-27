@@ -14,7 +14,7 @@ jobs:
         echo $CR_PAT | docker login ghcr.io -u PharaohCola13 --password-stdin
       env:
         CR_PAT: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build and Publish the PMAT Package
+    - name: Build and Publish 
       run: |
-        docker build . --tag ghcr.io/PharaohCola13/fyxapi:latest
-        docker push ghcr.io/PharaohCola13/fyxapi:latest
+        docker build . --tag ghcr.io/pharaohcola13/fyx-autoapi:latest
+        docker push ghcr.io/pharaohcola13/fyx-autoapi:latest
