@@ -138,6 +138,47 @@ for i in ${DIR[@]}; do
                 esac
             done < "$i"
             ;;
+        'pro')
+            topwrite ';' $i
+            while IFS= read -rs line; do
+                lzw=$(echo -e "$line" | tr -d '[:space:]')
+                case $lzw in 
+                $"pro"* | $"function"*)
+                    A=$(echo $line | cut -d "," -f2-)
+                    IFS=',' read -a array <<< "$A"
+
+                    N=$(grep -Fn "$line" $i | cut -d ":" -f1)
+                    M=$(($N + 4 + ${#array[@]}))
+                    if [[ -z $(sed -n "$N,$M{/$FNTEST/{=;p}}" $i) ]]; then
+                        sed -i "/$line/a #> $FNTEST" $i
+                    fi
+
+                    if [[ $lzw == $"function"* ]]; then
+                        if [[ -z $(sed -n "$N,$M{/$RETURN/{=;p}}" $i) ]]; then
+                            sed -i "/$line/a #> $RETURN" $i
+                        fi
+                    fi 
+
+                    for val in $(echo "${array[@]} " | tac -s ' '); do
+                        if [ $(echo "$val" | grep -c "=" ) -ne 0 ]; then
+                            default=$(echo "$val" | cut -d "=" -f2 | tr -d "\"")
+                            val=$(echo "$val" | cut -d "=" -f1)
+                            ARGS="param type \[$default\] $val:"
+                        else
+                            ARGS="param type $val:"
+                        fi
+
+                        if [[ -z $(sed -n "$N,$M{/$ARGS/{=;p}}" $i) ]]; then
+                            sed -i "/$line/a #> $ARGS" $i
+                        fi
+                    done
+
+                    if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
+                        sed -i "/$line/a #> $DETAIL" $i
+                    fi
+                esac
+            done < "$i"
+            ;;
         *)
             continue
             ;;

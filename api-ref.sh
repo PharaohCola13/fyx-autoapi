@@ -5,7 +5,7 @@
 #> author: PharaohCola13 <academic@sriley.dev>
 
 WDIR=$INPUT_DIR
-ODIR=$(realpath $WDIR/../docsr)
+ODIR=$(realpath $WDIR/../docsrc)
 IGNORE=$(realpath $WDIR/.ignore)
 APIDOC=$(echo $ODIR/api-reference.rst)
 
@@ -79,6 +79,10 @@ for i in ${DIR[@]}; do
         ;;
         "rs")
             c="//"
+        ;;
+        "pro")
+            c=";"
+        ;;
     esac
     while read -r line; do
         lzw=$(echo -e "$line" | tr -d '[:space:]')
@@ -114,6 +118,12 @@ for i in ${DIR[@]}; do
             func=$(echo -e "${func}" | tr -d '[:space:]')
             echo -e "\n.. function:: ${func}\n" >> $APIDOC
         ;;
+        $"pro"*)
+            func=${lzw/pro/}
+            #func=${func/,/}
+            func=$(echo -e "${func}" | tr -d '[:space:]')
+            echo -e "\n.. function:: ${func}\n" >> $APIDOC
+        ;;
         esac
     done < "$i"
 done
@@ -132,4 +142,4 @@ if [ ! -e $ODIR/conf.py ]; then
     
 fi
 
-python3 -m sphinx -T -E -b html $ODIR $ODIR/../docs/
+python3 -m sphinx -T -E -b latex $ODIR $ODIR/../docs/
