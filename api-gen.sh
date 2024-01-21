@@ -49,139 +49,31 @@ OUT=$(eval "find $WDIR $IGSTR -type f -print")
 DIR=($OUT)
 
 for i in ${DIR[@]}; do
-    echo -e $i
     j=${i##*/}
     case ${j#*.} in 
-        'r' | 'py')
-            topwrite '#' $i
-            while IFS= read -rs line; do
-                lzw=$(echo -e "$line" | tr -d '[:space:]')
-                case $lzw in 
-                $"class"*)
-                    A=$(echo $line | cut -d "(" -f2 | cut -d ")" -f1)
-                    IFS=',' read -a array <<< "$A"
-
-                    N=$(grep -Fn "$line" $i | cut -d ":" -f1)
-                    M=$(($N + 3 + ${#array[@]}))
-
-                    if [[ -z $(sed -n "$N,$M{/$METHOD/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $METHOD" $i
-                    fi
-
-                    if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $DETAIL" $i
-                    fi
-                ;;
-                *"<-function"* | $"def"*)
-                    A=$(echo $line | cut -d "(" -f2 | cut -d ")" -f1)
-                    IFS=',' read -a array <<< "$A"
-
-                    N=$(grep -Fn "$line" $i | cut -d ":" -f1)
-                    M=$(($N + 4 + ${#array[@]}))
-                    if [[ -z $(sed -n "$N,$M{/$FNTEST/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $FNTEST" $i
-                    fi
-
-                    if [[ -z $(sed -n "$N,$M{/$RETURN/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $RETURN" $i
-                    fi
-
-                    for val in $(echo "${array[@]} " | tac -s ' '); do
-                        if [ $(echo "$val" | grep -c "=" ) -ne 0 ]; then
-                            default=$(echo "$val" | cut -d "=" -f2 | tr -d "\"")
-                            val=$(echo "$val" | cut -d "=" -f1)
-                            ARGS="param type \[$default\] $val:"
-                        else
-                            ARGS="param type $val:"
-                        fi
-
-                        if [[ -z $(sed -n "$N,$M{/$ARGS/{=;p}}" $i) ]]; then
-                            sed -i "/$line/a #> $ARGS" $i
-                        fi
-                    done
-
-                    if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $DETAIL" $i
-                    fi
-                esac
-            done < "$i"
-            ;;
-        'rs') 
-            topwrite '//' $i
-            while read -r line; do
-                case $line in 
-                $"fn"*)
-                    A=$(echo $line | cut -d "(" -f2 | cut -d ")" -f1)
-                    IFS=',' read -a array <<< "$A"
-
-                    N=$(grep -Fn "$line" $i | cut -d ":" -f1)
-                    M=$(($N + 3 + ${#array[@]}))
-
-                    if [[ -z $(sed -n "$N,$M{/$RETURN/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a //> $RETURN" $i
-                    fi
-
-                    for val in $(echo "${array[@]} " | tac -s ' '); do
-                        type=$(echo "$val" | cut -d ":" -f2)
-                        val=$(echo "$val" | cut -d ":" -f1)
-
-                        ARGS="param $type $val:"
-
-                        if [[ -z $(sed -n "$N,$M{/$ARGS/{=;p}}" $i) ]]; then
-                            sed -i "/$line/a //> $ARGS" $i
-                        fi
-                    done
-
-                    if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a //> $DETAIL" $i
-                    fi
-                esac
-            done < "$i"
-            ;;
-        'pro')
-            topwrite ';' $i
-            while IFS= read -rs line; do
-                lzw=$(echo -e "$line" | tr -d '[:space:]')
-                case $lzw in 
-                $"pro"* | $"function"*)
-                    A=$(echo $line | cut -d "," -f2-)
-                    IFS=',' read -a array <<< "$A"
-
-                    N=$(grep -Fn "$line" $i | cut -d ":" -f1)
-                    M=$(($N + 4 + ${#array[@]}))
-                    if [[ -z $(sed -n "$N,$M{/$FNTEST/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $FNTEST" $i
-                    fi
-
-                    if [[ $lzw == $"function"* ]]; then
-                        if [[ -z $(sed -n "$N,$M{/$RETURN/{=;p}}" $i) ]]; then
-                            sed -i "/$line/a #> $RETURN" $i
-                        fi
-                    fi 
-
-                    for val in $(echo "${array[@]} " | tac -s ' '); do
-                        if [ $(echo "$val" | grep -c "=" ) -ne 0 ]; then
-                            default=$(echo "$val" | cut -d "=" -f2 | tr -d "\"")
-                            val=$(echo "$val" | cut -d "=" -f1)
-                            ARGS="param type \[$default\] $val:"
-                        else
-                            ARGS="param type $val:"
-                        fi
-
-                        if [[ -z $(sed -n "$N,$M{/$ARGS/{=;p}}" $i) ]]; then
-                            sed -i "/$line/a #> $ARGS" $i
-                        fi
-                    done
-
-                    if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
-                        sed -i "/$line/a #> $DETAIL" $i
-                    fi
-                esac
-            done < "$i"
-            ;;
+        "py")
+            c="#"
+            topwrite $c $i
+            ./style/style_py.sh $WDIR $i 'gen'
+        ;;
+        "r")
+            c="#"
+            topwrite $c $i
+            ./style/style_r.sh $WDIR $i 'gen'
+        ;;
+        "rs")
+            c="//"
+            topwrite $c $i
+            ./style/style_rust.sh $WDIR $i 'gen'
+        ;;
+        "pro")
+            c=";"
+            topwrite $c $i
+            ./style/style_idl.sh $WDIR $i 'gen'
+        ;;
         *)
             continue
-            ;;
+        ;;
     esac
 done
 

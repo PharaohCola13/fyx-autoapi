@@ -1,0 +1,35 @@
+{
+    "lang": {
+        "python": {
+            "comment": "#",
+            "class": "class",
+            "function": "$'def'*"
+        },
+        "r": {
+            "comment": "#",
+            "function": "*'<-function'*"
+        },
+        "rust": {
+            "comment": "//",
+            "function": "$'fn'*"
+        },
+        "idl": {
+            "comment": ";",
+            "function": ["$'pro'*", "$'function'*"]
+        }
+    },
+    "apiStrings": {
+        "file": {
+            "fileName": "file",
+            "fileSynopsis": "synopsis",
+            "fileAuthor": "author"
+        },
+        "function": {
+            "functionDetail": "detail",
+            "functionParam": "param type",
+            "functionReturn": "return (type)",
+            "functionMethod": "method",
+            "functionFntest": "test-method"
+        }
+    }
+}

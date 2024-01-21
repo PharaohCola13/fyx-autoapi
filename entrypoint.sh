@@ -1,9 +1,6 @@
 #!/bin/sh
 
 case $1 in
-    "test") 
-        /api-test.sh 
-    ;;
     "gen")
         /api-gen.sh 
     ;; 
@@ -12,7 +9,6 @@ case $1 in
     ;; 
     "all" )
         /api-gen.sh
-        /api-test.sh
         /api-ref.sh
     ;;
 esac 

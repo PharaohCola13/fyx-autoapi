@@ -74,58 +74,22 @@ for i in ${DIR[@]}; do
     j=${i##*/}
     echo -e "\n$(repeat "-" ${#j})\n$j\n$(repeat "-" ${#j})" >> $APIDOC
     case ${j#*.} in
-        "py" | "r")
-            c="#"
+        "py")
+            ./style/style_py.sh $WDIR $i 'ref'
+        ;;
+        "r")
+            ./style/style_r.sh $WDIR $i 'ref'
         ;;
         "rs")
-            c="//"
+            ./style/style_rust.sh $WDIR $i 'ref'
         ;;
         "pro")
-            c=";"
+            ./style/style_idl.sh $WDIR $i 'ref'
+        ;;
+        *)
+            continue
         ;;
     esac
-    while read -r line; do
-        lzw=$(echo -e "$line" | tr -d '[:space:]')
-        case $lzw in
-        $"$c>"*[a-z]*":"* )
-            if [[ $(echo $lzw | cut -d ":" -f1) != $(echo "$c>$FNTEST" | tr -d '[:space:]' | cut -d ':' -f1) ]]; then
-                Line=$(echo $line | cut -d '>' -f2 | sed "s/^[ \t]*//")
-                echo -e "\t:${Line}" >> $APIDOC
-            fi
-            ;;
-        $"class"*)
-            func=${lzw/class/}
-            func=${func/:/}
-            func=$(echo -e "${func}" | tr -d '[:space:]')
-            echo -e "\n.. class:: ${func}\n" >> $APIDOC
-        ;;
-        *"<-function"*)
-            func=${lzw/<-function/}
-            func=${func/{/}
-            func=$(echo -e "${func}" | tr -d '[:space:]')
-            echo -e "\n.. function:: ${func}\n" >> $APIDOC
-        ;;
-        $"def"* ) 
-            func=${lzw/def/}
-            func=${func/:/}
-            func=$(echo -e "${func}" | tr -d '[:space:]')
-            echo -e "\n.. function:: ${func}\n" >> $APIDOC
-        ;;
-        $"fn"*)
-            func=${lzw/->function/}
-            func=${func/fn/}
-            func=${func/{/}
-            func=$(echo -e "${func}" | tr -d '[:space:]')
-            echo -e "\n.. function:: ${func}\n" >> $APIDOC
-        ;;
-        $"pro"*)
-            func=${lzw/pro/}
-            #func=${func/,/}
-            func=$(echo -e "${func}" | tr -d '[:space:]')
-            echo -e "\n.. function:: ${func}\n" >> $APIDOC
-        ;;
-        esac
-    done < "$i"
 done
 
 if [ ! -e $ODIR/conf.py ]; then
