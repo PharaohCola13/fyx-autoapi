@@ -75,16 +75,16 @@ for i in ${DIR[@]}; do
     echo -e "\n$(repeat "-" ${#j})\n$j\n$(repeat "-" ${#j})" >> $APIDOC
     case ${j#*.} in
         "py")
-            ./style/style_py.sh $WDIR $i 'ref'
+            /style/style_py.sh $WDIR $i 'ref'
         ;;
         "r")
-            ./style/style_r.sh $WDIR $i 'ref'
+            /style/style_r.sh $WDIR $i 'ref'
         ;;
         "rs")
-            ./style/style_rust.sh $WDIR $i 'ref'
+            /style/style_rust.sh $WDIR $i 'ref'
         ;;
         "pro")
-            ./style/style_idl.sh $WDIR $i 'ref'
+            /style/style_idl.sh $WDIR $i 'ref'
         ;;
         *)
             continue
