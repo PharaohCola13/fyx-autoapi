@@ -54,22 +54,22 @@ for i in ${DIR[@]}; do
         "py")
             c="#"
             topwrite $c $i
-            ./style/style_py.sh $WDIR $i 'gen'
+            /style/style_py.sh $WDIR $i 'gen'
         ;;
         "r")
             c="#"
             topwrite $c $i
-            ./style/style_r.sh $WDIR $i 'gen'
+            /style/style_r.sh $WDIR $i 'gen'
         ;;
         "rs")
             c="//"
             topwrite $c $i
-            ./style/style_rust.sh $WDIR $i 'gen'
+            /style/style_rust.sh $WDIR $i 'gen'
         ;;
         "pro")
             c=";"
             topwrite $c $i
-            ./style/style_idl.sh $WDIR $i 'gen'
+            /style/style_idl.sh $WDIR $i 'gen'
         ;;
         *)
             continue
