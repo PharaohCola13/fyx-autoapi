@@ -9,7 +9,6 @@ COPY ./style /style
 
 COPY ./api-gen.sh /api-gen.sh
 COPY ./api-ref.sh /api-ref.sh
-COPY ./api-test.sh /api-test.sh
 COPY ./entrypoint.sh /entrypoint.sh
 
 RUN chmod -R +x /*.sh
