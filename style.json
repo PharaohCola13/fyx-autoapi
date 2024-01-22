@@ -6,7 +6,6 @@
             "class": "class",
             "function": {
                 "tag": "^def",
-                "throwaway": ":",
                 "arg": {
                     "format": "(argName=default):",
                     "sep": ","
@@ -17,8 +16,7 @@
             "name": "r",
             "comment": "#",
             "function": {
-                "tag": "^.*<-function",
-                "throwaway": "{",
+                "tag": "<-function",
                 "arg": {
                     "format": "(argName=default){",
                     "sep": ","
@@ -30,7 +28,6 @@
             "comment": ";",
             "function": {
                 "tag": "^(pro|function)",
-                "throwaway": null,
                 "arg": {
                     "format": ", argName=default",
                     "sep": ","

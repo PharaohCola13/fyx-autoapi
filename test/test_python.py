@@ -3,6 +3,7 @@
 #> synopsis: 
 #> author:   <>
 
+
 def test(arg6, arg7=1, arg8="test1"):
 #> detail: 
 #> param type arg6:
@@ -10,6 +11,9 @@ def test(arg6, arg7=1, arg8="test1"):
 #> param type [test1] arg8:
 #> return (type): 
 #> test-method:
+
+
+
 
 
 
