@@ -1,4 +1,5 @@
 #> file:  ./test.r
+#> lang:  r
 #> synopsis: 
 #> author:  PharaohCola13 <academic@sriley.dev>
 test1 <- function(arg1, arg2="test2"){

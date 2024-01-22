@@ -1,4 +1,5 @@
 #> file:  ./test.py
+#> lang:  python
 #> synopsis: 
 #> author:  PharaohCola13 <academic@sriley.dev>
 def test(arg6, arg7=1, arg8="test1"):
