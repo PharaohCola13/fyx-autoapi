@@ -1,5 +1,5 @@
 # Container image that runs your code
-FROM python:latest
+FROM debian:latest
 
 # RUN apt-get install latexmk texlive-latex-extra
 RUN apt-get update
