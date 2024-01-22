@@ -2,6 +2,7 @@
 FROM python:latest
 
 # RUN apt-get install latexmk texlive-latex-extra
+RUN apt-get install jq
 RUN pip install sphinx sphinx-rtd-theme
 
 COPY ./style.json /style.json
