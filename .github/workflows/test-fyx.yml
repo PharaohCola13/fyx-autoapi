@@ -14,7 +14,15 @@ jobs:
         uses: PharaohCola13/fyx-autoapi@main
         with:
           dir: ./
-          type: all
+          type: ref
+        env:
+          FYX_USERNAME: PharaohCola13
+          FYX_EMAIL: academic@sriley.dev
+      - name: Fyx Testing
+        uses: PharaohCola13/fyx-autoapi@main
+        with:
+          dir: ./
+          type: gen
         env:
           FYX_USERNAME: PharaohCola13
           FYX_EMAIL: academic@sriley.dev
