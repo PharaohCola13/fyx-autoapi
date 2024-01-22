@@ -147,8 +147,11 @@ case $INPUT_TYPE in
                 while IFS= read -rs line; do
                     lzw=$(echo -e "$line" | tr -d '[:space:]')
                     param=$(echo ${test} | tr -d '[:blank:]')
-                    if [[ $lzw =~ $"$c>"*[a-z]*":"* ]]; then
+                    if [[ $lzw =~ ^"$c>".*[a-z].*":".* ]]; then
+                        echo $lzw
+                        echo "Pass1"
                         if [[ $(echo $lzw | cut -d ":" -f1) != $(echo "$c>$FNTEST" | tr -d '[:space:]' | cut -d ':' -f1) ]]; then
+                            echo "PAss2"
                             Line=$(echo $line | cut -d '>' -f2- | sed "s/^[ \t]*//")
                             echo -e "\t:${Line}" >> $APIDOC
                         fi
