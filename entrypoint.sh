@@ -50,7 +50,7 @@ fi
 OUT=$(eval "find $WDIR $IGSTR -type f -print")
 DIR=($OUT)
 
-case $1 in
+case $INPUT_TYPE in
     "gen")
         for i in ${DIR[@]}; do
             ii=${i##*/}
@@ -167,8 +167,4 @@ case $1 in
         done
 
     ;; 
-    "all" )
-        /entrypoint.sh 'gen'
-        /entrypoint.sh 'ref'
-    ;;
 esac 
