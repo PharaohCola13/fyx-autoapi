@@ -13,7 +13,7 @@ jobs:
       - name: Fyx Testing
         uses: PharaohCola13/fyx-autoapi@main
         with:
-          dir: ./
+          dir: ./src/
           type: ref
         env:
           FYX_USERNAME: PharaohCola13
@@ -21,7 +21,7 @@ jobs:
       - name: Fyx Testing
         uses: PharaohCola13/fyx-autoapi@main
         with:
-          dir: ./
+          dir: ./src/
           type: gen
         env:
           FYX_USERNAME: PharaohCola13
