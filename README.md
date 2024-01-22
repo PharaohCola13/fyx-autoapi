@@ -1,6 +1,6 @@
 # fyx-autodoc
 
-This action generates in-code API documentation skeleton for R, Python, and Rust.
+This action generates in-code API documentation skeleton for R, Python, and IDL.
 
 ## The Fyx Framework
 
@@ -91,42 +91,5 @@ test2 <- function(arg3, arg4){
 #> param (type) arg4:
 #> return (type): 
    return(args)
-}
-```
-
-## Test case (test.rs)
-
-Simple Rust file
-```Rust
-fn test -> function(arg5:u32, arg6:i16){
-    return out
-}
-
-
-fn test2 -> function(arg5:u32, arg10:i8){
-}
-```
-Result
-```Rust
-//> file:  ./test.rs
-//> synopsis: 
-//> author: PharaohCola13 <academic@sriley.dev>
-fn test -> function(arg5:u32, arg6:i16){
-//> detail: 
-//> param (u32) arg5:
-//> param (i16) arg6:
-//> return (type):
-//> test-method:
-    return out
-}
-
-
-fn test2 -> function(arg5:u32, arg10:i8){
-//> detail: 
-//> param (u32) arg5:
-//> param (i8) arg10:
-//> return (type): 
-//> test-method:
-
 }
 ```
