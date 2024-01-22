@@ -6,6 +6,7 @@ API Reference
 test.py
 -------
 	:file: ./test.py
+	:lang: python
 	:synopsis:
 	:author: PharaohCola13 <academic@sriley.dev>
 
@@ -21,6 +22,7 @@ test.py
 test.r
 ------
 	:file: ./test.r
+	:lang: r
 	:synopsis:
 	:author: PharaohCola13 <academic@sriley.dev>
 
