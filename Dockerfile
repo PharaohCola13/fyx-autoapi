@@ -4,7 +4,7 @@ FROM python:latest
 # RUN apt-get install latexmk texlive-latex-extra
 RUN pip install sphinx sphinx-rtd-theme
 
-COPY ./style /style
+COPY ./style.json /style.json
 COPY ./entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
