@@ -3,19 +3,36 @@
         "python": {
             "comment": "#",
             "class": "class",
-            "function": "$'def'*"
+            "function": {
+                "tag": ["def"],
+                "throwaway": ":",
+                "arg": {
+                    "format": "(argName=default):",
+                    "sep": ","
+                }
+            }
         },
         "r": {
             "comment": "#",
-            "function": "*'<-function'*"
-        },
-        "rust": {
-            "comment": "//",
-            "function": "$'fn'*"
+            "function": {
+                "tag": ["<-function"],
+                "throwaway": "{",
+                "arg": {
+                    "format": "(argName=default){",
+                    "sep": ","
+                }
+            }
         },
         "idl": {
             "comment": ";",
-            "function": ["$'pro'*", "$'function'*"]
+            "function": {
+                "tag": ["function", "pro"],
+                "throwaway": null,
+                "arg": {
+                    "format": ", argName=default!",
+                    "sep": ","
+                }
+            }
         }
     },
     "apiStrings": {
