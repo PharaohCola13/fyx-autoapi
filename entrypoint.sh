@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 WDIR=$INPUT_DIR
