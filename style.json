@@ -1,10 +1,11 @@
 {
     "lang": {
-        "python": {
+        "py": {
+            "name": "python",
             "comment": "#",
             "class": "class",
             "function": {
-                "tag": ["def"],
+                "tag": "^def",
                 "throwaway": ":",
                 "arg": {
                     "format": "(argName=default):",
@@ -13,9 +14,10 @@
             }
         },
         "r": {
+            "name": "r",
             "comment": "#",
             "function": {
-                "tag": ["<-function"],
+                "tag": "^.*<-function",
                 "throwaway": "{",
                 "arg": {
                     "format": "(argName=default){",
@@ -23,13 +25,14 @@
                 }
             }
         },
-        "idl": {
+        "pro": {
+            "name": "idl",
             "comment": ";",
             "function": {
-                "tag": ["function", "pro"],
+                "tag": "^(pro|function)",
                 "throwaway": null,
                 "arg": {
-                    "format": ", argName=default!",
+                    "format": ", argName=default",
                     "sep": ","
                 }
             }

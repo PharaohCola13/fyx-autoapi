@@ -55,83 +55,68 @@ case $1 in
         for i in ${DIR[@]}; do
             echo $i
             ii=${i##*/}
-            case ${ii#*.} in
-                "py") lang="python" ;;
-                "r") lang="r";;
-                "pro") lang="idl";;
-                *) continue ;;
-            esac
-            c=$(jq ".lang.$lang.comment" ./style.json | tr -d '\"' )
+            if [[ $(jq ".lang.${ii#*.}" ./style.json) == null ]]; then
+                break
+            fi
+            c=$(jq ".lang.${ii#*.}.comment" ./style.json | tr -d '\"' )
             
-            IFS="," test=($(jq ".lang.$lang.function.tag" ./style.json | tr -d '[]\"[:space:]'))
-            trash=($(jq ".lang.$lang.function.throwaway" ./style.json | tr -d '[]\"[:space:]'))
+            test=$(jq ".lang.${ii#*.}.function.tag" ./style.json | tr -d '[]\"[:space:]')
+            trash=($(jq ".lang.${ii#*.}.function.throwaway" ./style.json | tr -d '[]\"[:space:]'))
 
-            argFormat=$(jq ".lang.$lang.function.arg.format" ./style.json | tr -d "\"")
-            argSep=$(jq ".lang.$lang.function.arg.sep" ./style.json | tr -d "\"")
+            argFormat=$(jq ".lang.${ii#*.}.function.arg.format" ./style.json | tr -d "\"")
+            argSep=$(jq ".lang.${ii#*.}.function.arg.sep" ./style.json | tr -d "\"")
 
             defaultDiv=${argFormat##*"argName"}
             defaultDiv=${defaultDiv:0:1}
-            topwrite $c $i $lang            
+            topwrite $c $i $(jq ".lang.${ii#*.}.name" ./style.json | tr -d '\"' )          
             while IFS= read -rs line; do
-                for (( j=0; j < ${#test[@]}; j++)); do
-                    lzw=$(echo -e "$line" | tr -d '[:blank:]')
-                    param=$(echo ${test[$j]} | tr -d '[:blank:]')
-                    case $lzw in
-                        *"$param"*)   
-                            unset IFS
-                            if [[ ${argFormat:(-1)} == "!" ]]; then
-                                func=${lzw/$param/}
-                                for (( k=0; k < ${#trash[@]}; k++)); do
-                                    func=${func/$(echo ${trash[$k]} | tr -d '[:blank:]')}
-                                done
-                                A=$(echo $func | cut -d "," -f2- )
-     
-                            else
-                                A=$(echo $line | cut -d ${argFormat:0:1} -f2  | cut -d ${argFormat:(-2):(-1)} -f1 )
-                                       
-                            fi
-                            IFS=${argSep} read -a array <<< "$A"
-                            unset IFS
-                            echo ${#array[@]}        
+                lzw=$(echo -e "$line" | tr -d '[:blank:]')
+                param=$(echo $test | tr -d '[:blank:]')
+                if [[ $lzw =~ $param ]]; then
+                    unset IFS
+                    if ! [[ ${argFormat:(-1)} =~ [^a-zA-Z0-9\ ] ]]; then
+                        func=${lzw/$param/}
+                        for (( k=0; k < ${#trash[@]}; k++)); do
+                            func=${func/$(echo ${trash[$k]} | tr -d '[:blank:]')}
+                        done
+                        A=$(echo $func | cut -d "," -f2- )
+                    else
+                        A=$(echo $line | cut -d ${argFormat:0:1} -f2  | cut -d ${argFormat:(-2):(-1)} -f1 )
+                                
+                    fi
+                    IFS=${argSep} read -a array <<< "$A"
+                    unset IFS       
 
-                            N=$(grep -Fn "$line" $i | cut -d ":" -f1)
-                            M=$(($N + 4 + ${#array[@]}))
+                    N=$(grep -Fn "$line" $i | cut -d ":" -f1)
+                    M=$(($N + 4 + ${#array[@]}))
 
-                            if [[ -z $(sed -n "$N,$M{/$FNTEST/{=;p}}" $i) ]]; then
-                                echo "IF4"
-                                sed -i '/'"$line"'/a '"$c"'> '"$FNTEST" $i
-                            fi
+                    if [[ -z $(sed -n "$N,$M{/$FNTEST/{=;p}}" $i) ]]; then
+                        sed -i '/'"$line"'/a '"$c"'> '"$FNTEST" $i
+                    fi
 
-                            if [[ -z $(sed -n "$N,$M{/$RETURN/{=;p}}" $i) ]]; then
-                                echo "IF3"
-                                sed -i '/'"$line"'/a '"$c"'> '"$RETURN" $i
-                            fi
+                    if [[ -z $(sed -n "$N,$M{/$RETURN/{=;p}}" $i) ]]; then
+                        sed -i '/'"$line"'/a '"$c"'> '"$RETURN" $i
+                    fi
 
-                            for val in $(echo "${array[@]}" | tac -s ' '); do
-                                if [ $(echo "$val" | grep -c $defaultDiv ) -ne 0 ]; then
-                                    default=$(echo "$val" | cut -d $defaultDiv -f2 | tr -d "\"")
-                                    val=$(echo "$val" | cut -d $defaultDiv -f1)
-                                    ARGS="param type \[$default\] $val:"
-                                else
-                                    ARGS="param type $val:"
-                                fi
-                                if [[ -z $(sed -n "$N,$M{/$ARGS/{=;p}}" $i) ]]; then
-                                    echo "IF2"
-                                    sed -i '/'"$line"'/a '"$c"'> '"$ARGS" $i
-                                fi
-                            done
-                            
-                            if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
-                                echo "IOF1"
-                                sed -i '/'"$line"'/a '"$c"'> '"$DETAIL" $i
-                            fi
-                            break
-                        ;;    
-                        *)
-                            continue
-                        ;;
-                    esac
-                done  
+                    for val in $(echo "${array[@]}" | tac -s ' '); do
+                        if [ $(echo "$val" | grep -c $defaultDiv ) -ne 0 ]; then
+                            default=$(echo "$val" | cut -d $defaultDiv -f2 | tr -d "\"")
+                            val=$(echo "$val" | cut -d $defaultDiv -f1)
+                            ARGS="param type \[$default\] $val:"
+                        else
+                            ARGS="param type $val:"
+                        fi
+                        if [[ -z $(sed -n "$N,$M{/$ARGS/{=;p}}" $i) ]]; then
+                            sed -i '/'"$line"'/a '"$c"'> '"$ARGS" $i
+                        fi
+                    done
+                    
+                    if [[ -z $(sed -n "$N,$M{/$DETAIL/{=;p}}" $i) ]]; then
+                        sed -i '/'"$line"'/a '"$c"'> '"$DETAIL" $i
+                    fi
+                else
+                    continue
+                fi
             done     < "$i"       
         done
     ;; 
@@ -157,45 +142,32 @@ case $1 in
         echo -e "$(repeat "*" ${#TITLE})\n$TITLE\n$(repeat "*" ${#TITLE})" > $APIDOC
 
         for i in ${DIR[@]}; do
-            ii=${i##*/}
+            ii=${i##*/}                        
+            if [[ $(jq ".lang.${ii#*.}" ./style.json) == null ]]; then
+                break
+            fi            
             echo -e "\n$(repeat "-" ${#ii})\n$ii\n$(repeat "-" ${#ii})" >> $APIDOC
-            case ${ii#*.} in
-                "py") lang="python" ;;
-                "r") lang="r";;
-                "pro") lang="idl";;
-                *) continue ;;
-            esac
-            c=$(jq ".lang.$lang.comment" ./style.json | tr -d '\"' )
-            test=($(jq ".lang.$lang.function.tag" ./style.json | tr -d '[]\"[:space:]'))
-            trash=($(jq ".lang.$lang.function.throwaway" ./style.json | tr -d '[]\"[:space:]'))
+            c=$(jq ".lang.${ii#*.}.comment" ./style.json | tr -d '\"' )
+            test=$(jq ".lang.${ii#*.}.function.tag" ./style.json | tr -d '[]\"[:space:]')
+            trash=($(jq ".lang.${ii#*.}.function.throwaway" ./style.json | tr -d '[]\"[:space:]'))
             IFS=','
-            echo ${test[@]}
             while IFS= read -rs line; do
                 lzw=$(echo -e "$line" | tr -d '[:space:]')
-                for (( j=0; j < ${#test[@]}; j++)); do
-                    param=$(echo ${test[$j]} | tr -d '[:blank:]')
-                    case $lzw in
-                        $"$c>"*[a-z]*":"* )
-                            if [[ $(echo $lzw | cut -d ":" -f1) != $(echo "$c>$FNTEST" | tr -d '[:space:]' | cut -d ':' -f1) ]]; then
-                                Line=$(echo $line | cut -d '>' -f2- | sed "s/^[ \t]*//")
-                                echo -e "\t:${Line}" >> $APIDOC
-                            fi
-                            break
-                        ;;
-                        *"$param"*)          
-                            func=${lzw/$param/}
-                            echo $func
-                            for (( k=0; k < ${#trash[@]}; k++)); do
-                                func=${func/$(echo ${trash[$k]} | tr -d '[:blank:]')}
-                            done
-                            echo -e "\n.. function:: ${func}\n" >> $APIDOC
-                            break
-                        ;;    
-                        *)
-                            continue
-                        ;;
-                    esac
-                done
+                param=$(echo ${test} | tr -d '[:blank:]')
+                 if [[ $lzw =~ $"$c>"*[a-z]*":"* ]]; then
+                    if [[ $(echo $lzw | cut -d ":" -f1) != $(echo "$c>$FNTEST" | tr -d '[:space:]' | cut -d ':' -f1) ]]; then
+                        Line=$(echo $line | cut -d '>' -f2- | sed "s/^[ \t]*//")
+                        echo -e "\t:${Line}" >> $APIDOC
+                    fi
+                elif [[ $lzw =~ $param ]]; then        
+                        func=${lzw/$param/}
+                        for (( k=0; k < ${#trash[@]}; k++)); do
+                            func=${func/$(echo ${trash[$k]} | tr -d '[:blank:]')}
+                        done
+                        echo -e "\n.. function:: ${func}\n" >> $APIDOC
+                else
+                        continue
+                fi
             done < "$i"
         done
 

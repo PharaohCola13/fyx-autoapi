@@ -1,12 +1,10 @@
 # Container image that runs your code
 FROM python:latest
 
-#RUN apt-get install python3
 # RUN apt-get install latexmk texlive-latex-extra
 RUN pip install sphinx sphinx-rtd-theme
 
 COPY ./style /style
-
 COPY ./entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

@@ -3,6 +3,10 @@
 #> synopsis: 
 #> author:   <>
 
+function(arg1){
+
+
+}
 
 test1 <- function(arg1, arg2="test2"){
 #> detail: 
